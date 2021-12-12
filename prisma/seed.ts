@@ -19,7 +19,14 @@ async function main() {
       name: 'Bob',
     },
   });
-  console.log({ alice, bob });
+
+  const enquiry = await prisma.enquiry.create({
+    data: {
+      phone: '+7343544656',
+      name: 'ILYA',
+      type: 'INTERNET',
+    },
+  });
 }
 
 main()

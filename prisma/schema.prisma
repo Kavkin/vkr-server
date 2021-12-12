@@ -11,7 +11,25 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id      Int       @id @default(autoincrement())
+  email   String    @unique
+  name    String?
+  Enquiry Enquiry[]
+}
+
+model Enquiry {
+  id         Int      @id @default(autoincrement())
+  phone      String
+  name       String
+  comment    String?
+  success    Boolean  @default(false)
+  type       Type
+  operator   User?    @relation(references: [id], fields: [operatorId])
+  operatorId Int?
+  createdAt  DateTime @default(now())
+}
+
+enum Type {
+  INTERNET
+  IPTV
 }
