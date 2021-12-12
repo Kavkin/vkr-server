@@ -16,9 +16,9 @@ export class AppController {
   @Header('Content-Type', 'application/json')
   @Post()
   findAll(@Req() request: Request) {
-    return prisma.user.findMany({
-      take: request.body.take ?? 10,
-      skip: request.body.skip,
-    });
+    if (request.body.take > 100) {
+      throw new Error('"take" cannot be more 100');
+    }
+    return prisma.user.findMany(request.body);
   }
 }
