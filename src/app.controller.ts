@@ -1,13 +1,8 @@
-import {
-  Controller,
-  Header,
-  HttpException,
-  HttpStatus,
-  Post,
-  Req,
-} from '@nestjs/common';
+import { Controller, Header, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { PrismaClient } from '@prisma/client';
+import { throwCollectedErrors } from './utils/throw-collected-errors';
+import { validateNotMoreThan, validateNumber } from './validators';
 
 const prisma = new PrismaClient();
 
@@ -15,7 +10,13 @@ const prisma = new PrismaClient();
 export class AppController {
   @Header('Content-Type', 'application/json')
   @Post()
-  findAll(@Req() request: Request) {
+  async findAll(@Req() request: Request) {
+    await throwCollectedErrors([
+      () => validateNumber(request.body.take, 'take'),
+      () => validateNumber(request.body.skip, 'skip'),
+      () => validateNotMoreThan(request.body.take, 100, 'take'),
+    ]);
+
     return prisma.user.findMany({
       take: request.body.take ?? 10,
       skip: request.body.skip,
