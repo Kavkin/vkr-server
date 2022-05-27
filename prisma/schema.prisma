@@ -11,21 +11,25 @@ datasource db {
 }
 
 model User {
-  id      Int       @id @default(autoincrement())
-  email   String    @unique
-  name    String?
-  Enquiry Enquiry[]
+  id        String    @id @default(uuid()) @db.Uuid
+  email     String    @unique
+  name      String?
+  password  String
+  diskSpace Int?
+  usedSpace Int?
+  avatar    String?
+  Enquiry   Enquiry[]
 }
 
 model Enquiry {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid()) @db.Uuid
   phone      String
   name       String
   comment    String?
   success    Boolean  @default(false)
   type       Type
   operator   User?    @relation(references: [id], fields: [operatorId])
-  operatorId Int?
+  operatorId String?  @db.Uuid
   createdAt  DateTime @default(now())
 }
 

@@ -1,7 +1,8 @@
-import { Controller, Get, Header, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Get, Header, Post, Put, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { EnquiryService } from './enquiry.service';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
