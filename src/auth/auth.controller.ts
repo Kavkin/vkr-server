@@ -27,7 +27,7 @@ interface AuthBody {
   password: string;
 }
 
-@Controller('auth')
+@Controller('api/v1/auth')
 export class AuthController {
   @Header('Content-Type', 'application/json')
   @Post('registration')
@@ -39,7 +39,7 @@ export class AuthController {
     }
     const hashPassword = await hash(password, 8);
     const user = await prisma.user.create({
-      data: { email, password: hashPassword },
+      data: { email, role: 'CLIENT', password: hashPassword },
     });
     return user;
   }
@@ -47,13 +47,12 @@ export class AuthController {
   @Post('login')
   async login(@Body() body: LoginBody) {
     const { email, password } = body;
+    console.log(body);
+
     const user = await prisma.user.findFirst({ where: { email } });
 
     if (!user) {
-      throw new HttpException(
-        `User not found ${email} `,
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new HttpException(`User not found ${email} `, HttpStatus.NOT_FOUND);
     }
 
     const isPassValid = await hash(password, user.password);
@@ -93,7 +92,7 @@ export class AuthController {
     );
     return {
       token,
-      user: {
+      userç: {
         id: user.id,
         email: user.email,
         diskSpace: user.diskSpace,

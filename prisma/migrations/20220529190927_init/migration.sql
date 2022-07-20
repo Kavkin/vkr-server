@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Type" AS ENUM ('INTERNET', 'IPTV');
+CREATE TYPE "Role" AS ENUM ('ADMIN', 'CLIENT');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -10,6 +10,8 @@ CREATE TABLE "User" (
     "diskSpace" INTEGER,
     "usedSpace" INTEGER,
     "avatar" TEXT,
+    "role" "Role" NOT NULL,
+    "phone" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -21,7 +23,6 @@ CREATE TABLE "Enquiry" (
     "name" TEXT NOT NULL,
     "comment" TEXT,
     "success" BOOLEAN NOT NULL DEFAULT false,
-    "type" "Type" NOT NULL,
     "operatorId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

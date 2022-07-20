@@ -19,6 +19,8 @@ model User {
   usedSpace Int?
   avatar    String?
   Enquiry   Enquiry[]
+  role      Role
+  phone     String?
 }
 
 model Enquiry {
@@ -27,13 +29,12 @@ model Enquiry {
   name       String
   comment    String?
   success    Boolean  @default(false)
-  type       Type
   operator   User?    @relation(references: [id], fields: [operatorId])
   operatorId String?  @db.Uuid
   createdAt  DateTime @default(now())
 }
 
-enum Type {
-  INTERNET
-  IPTV
+enum Role {
+  ADMIN
+  CLIENT
 }

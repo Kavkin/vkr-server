@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-@Controller('enquiries')
+@Controller('api/v1/enquiries')
 export class EnquiryController {
   constructor(private readonly enquiryService: EnquiryService) {}
 
@@ -20,7 +20,7 @@ export class EnquiryController {
   }
 
   @Header('Content-Type', 'application/json')
-  @Put()
+  @Post()
   create(@Req() request: Request) {
     return prisma.enquiry.create({
       data: request.body,
